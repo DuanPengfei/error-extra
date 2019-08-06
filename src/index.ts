@@ -23,8 +23,8 @@ function generateErrorClass(errorConfig: errorConfigInterface, options: optionsI
   httpStatus: 500
 }) {
   const ErrorClass = class extends Error {
-    static code: string = options.code;
-    static httpStatus: number = options.httpStatus;
+    code: string = options.code;
+    httpStatus: number = options.httpStatus;
     message: string = options.message;
 
     constructor(err?: Error | string, customMessage?: string) {
@@ -41,14 +41,6 @@ function generateErrorClass(errorConfig: errorConfigInterface, options: optionsI
       } else if (typeof err === 'string') {
         this.message = `${this.message}: ${err}`;
       }
-    }
-
-    get code() {
-      return ErrorClass.code;
-    }
-
-    get httpStatus() {
-      return ErrorClass.httpStatus;
     }
   }
 
@@ -67,6 +59,8 @@ function generateErrorClass(errorConfig: errorConfigInterface, options: optionsI
         Error.captureStackTrace(this, c);
 
         this.message = customMessage ? `${errorConfig[e].message}: ${customMessage}` : errorConfig[e].message;
+        this.code = errorConfig[e].code;
+        this.httpStatus = errorConfig[e].httpStatus;
 
         if (err instanceof Error) {
           this.message = `${this.message} << ${err.message}`;
@@ -76,14 +70,6 @@ function generateErrorClass(errorConfig: errorConfigInterface, options: optionsI
         }
 
         return this;
-      }
-
-      get code() {
-        return c.code;
-      }
-
-      get httpStatus() {
-        return c.httpStatus;
       }
     };
 

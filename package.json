@@ -1,6 +1,6 @@
 {
   "name": "error-extra",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "extends error",
   "main": "lib/index.js",
   "files": [
@@ -9,7 +9,8 @@
   "scripts": {
     "cov": "nyc mocha -r ts-node/register test/**/*.test.ts",
     "test": "mocha -r ts-node/register test/**/*.test.ts",
-    "tsc": "rm -rf lib && tsc -p tsconfig.json"
+    "tsc": "rm -rf lib && tsc -p tsconfig.json",
+    "publish": "npm run tsc && npm publish"
   },
   "repository": {
     "type": "git",
