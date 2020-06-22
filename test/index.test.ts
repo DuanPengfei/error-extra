@@ -11,26 +11,32 @@ describe('test/index.test.ts', () => {
     MissingToken: {
       code: 'MissingParameter.MissingToken',
       httpStatus: 400,
-      message: '缺少用户信息',
+      message: 'Missing user token.',
     },
 
     InvalidToken: {
       code: 'InvalidParameter.InvalidToken',
       httpStatus: 401,
-      message: '无效 token',
+      message: 'Invalid token.',
     },
 
     InvalidSign: {
       code: 'Unauthorized.InvalidSign',
       httpStatus: 401,
-      message: '无效 sign',
+      message: 'Invalid sign.',
     },
 
     NotFound: {
       code: 'NotFound',
       httpStatus: 404,
-      message: '资源不存在',
+      message: 'Not found.',
     },
+
+    NumberCodeError: {
+      code: 222,
+      httpStatus: 400,
+      message: 'code is number error message'
+    }
   };
   const { ErrorClass, error } = generateErrorClass(errorConfig, {
     code: 'InternalServerError',
@@ -120,6 +126,15 @@ describe('test/index.test.ts', () => {
     assert.strictEqual(err.message, `${errorConfig.MissingToken.message}: custom error message << previous error message`);
     assert.strictEqual(err.httpStatus, errorConfig.MissingToken.httpStatus);
     assert.strictEqual((err.stack as string).indexOf((previousErr.stack as any).split('\n').slice(1).join('\n')) !== -1, true);
+  });
+
+  it('create error with number code', () => {
+    const err = new error.NumberCodeError();
+    assert.strictEqual(err instanceof ErrorClass, true);
+    assert.strictEqual(err instanceof Error, true);
+    assert.strictEqual(err.code, errorConfig.NumberCodeError.code);
+    assert.strictEqual(err.message, errorConfig.NumberCodeError.message);
+    assert.strictEqual(err.httpStatus, errorConfig.NumberCodeError.httpStatus);
   });
 
 });

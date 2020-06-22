@@ -5,14 +5,14 @@
 
 interface errorConfigInterface {
   [key: string]: {
-    code: string;
+    code: string | number;
     message: string;
     httpStatus: number;
   }
 }
 
 interface optionsInterface {
-  code: string;
+  code: string | number;
   message: string;
   httpStatus: number;
 }
@@ -23,7 +23,7 @@ function generateErrorClass(errorConfig: errorConfigInterface, options: optionsI
   httpStatus: 500
 }) {
   const ErrorClass = class extends Error {
-    code: string = options.code;
+    code: string | number = options.code;
     httpStatus: number = options.httpStatus;
     message: string = options.message;
 
@@ -50,7 +50,7 @@ function generateErrorClass(errorConfig: errorConfigInterface, options: optionsI
 
   Object.keys(errorConfig).forEach(e => {
     const c = class extends ErrorClass {
-      static code: string = errorConfig[e].code;
+      static code: string | number = errorConfig[e].code;
       static httpStatus: number = errorConfig[e].httpStatus;
       message: string;
 
